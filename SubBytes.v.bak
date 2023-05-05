@@ -1,0 +1,11 @@
+
+module SubBytes(
+input [127:0] in,
+output [127:0] out
+);
+integer i;
+for( i= 0; i<16;i=i+1)
+begin
+S_Box mm(in[8*i+7:8*i],out[8*i+7:8*i]);
+end
+endmodule
