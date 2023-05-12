@@ -1,0 +1,23 @@
+`include "MixColumn.v"
+module tb_mixcolumn();
+
+reg [0:127]state;
+wire [0:127]final;
+wire [0:127]new_state;
+
+
+assign final =128'h473794ed40d4e4a5a3703aa64c9f42bc;
+  
+
+MixColumn a(state,new_state)
+initial 
+begin
+$monitor ("state=%h   new_state=%h   final=%h", state ,new_state, final);
+state =128'h876e46a6f24ce78c4d904ad897ecc395;
+end
+
+
+
+
+
+endmodule 
