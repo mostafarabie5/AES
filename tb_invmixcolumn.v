@@ -10,7 +10,7 @@ wire [0:127]new_state;
 assign final =128'h876e46a6f24ce78c4d904ad897ecc395;
   
 
-invMixColumn a(state,new_state);
+invMixColumn a(temp,new_state);
 initial 
 begin
 $monitor ("state=%h   new_state=%h   final=%h", state ,new_state, final);

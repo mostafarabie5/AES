@@ -1,0 +1,33 @@
+
+module AES_Decryption#(parameter NK=4,NR=NK+6)(encrypted,key,plaintext);
+input [0:127]encrypted;
+input[0:32*NK-1] key;
+output wire[0:127]plaintext;
+
+wire [0:127]out[0:NR];
+wire [0:127] afterSub;
+wire [0:127] afterShift;
+wire [0:32*4*(NR+1)-1] completeKey;
+
+wire[0:127] temp1;
+wire[0:127]temp2;
+
+KeyExpansion e1(key,completeKey);
+
+Add_Round_Key a1(encrypted,completeKey[128*NR+:128],out[NR]);
+
+genvar i;
+for(i=NR-1;i>0;i=i-1)
+begin
+DecryptionRound r1(out[i+1],completeKey[128*i+:128],out[i]);
+end
+
+
+Inverse_ShiftRows s2(afterSub,afterShift);
+InverseSubBytes s1(out[1],afterSub);
+inverseAdd_Round_Key a2(afterShift,completeKey[0:127],out[0]);
+
+assign plaintext=out[0];
+assign temp1=out[2];
+assign temp2=out[1];
+endmodule

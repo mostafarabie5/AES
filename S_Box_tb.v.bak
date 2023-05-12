@@ -1,9 +1,30 @@
 
 module S_Box_tb();
-reg[0:7] i;
-wire[0:7] out;
+reg[0:7] i1;
+wire[0:7] out1;
+reg[0:7] i2;
+wire[0:7] out2;
+reg[0:7] i3;
+wire[0:7] out3;
 initial begin 
-i = 8'h09;
+i1 = 8'h09;
+i2=8'h98;
+i3=8'haf;
+#10
+if(out1==8'h01)
+$monitor("First case is True");
+else
+$monitor("First case is wrong");
+if(out2==8'h46)
+$monitor("Second case is True");
+else
+$monitor("Second case is wrong");
+if(out3==8'h79)
+$monitor("Third case is True");
+else
+$monitor("Third case is wrong");
 end
-S_Box
+S_Box s1(i1,out1);
+S_Box s2(i2,out2);
+S_Box s3(i3,out3);
 endmodule
