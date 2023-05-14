@@ -44,16 +44,8 @@ always @(posedge CLK) begin
 	SHIFT: begin
 		if(!CS) begin
 		OUT_SR <= OUT_SR>>1;
-		counter = counter+1;
-		IN_SR <= IN_SR>>1;
-		IN_SR[15] <= MISO;
-		DONE <= 0;
-		if(counter==16)begin
-			DONE <= 1;
-			STATE <= IDEL;
-			CS <= 1;
-			counter =0;
-		end
+		
+
 		end
 	end
 
@@ -61,6 +53,29 @@ always @(posedge CLK) begin
 end
 always @(posedge DONE) DATA_OUT<=IN_SR;
 
+always @(negedge CLK) begin
+	case(STATE)
+	SHIFT: begin
+		IN_SR <= IN_SR>>1;
+		IN_SR[15] <= MISO;
+		DONE <= 0;
+		counter = counter+1;
+	end
+	endcase
+end
+always @(posedge CLK) begin
+	case(STATE)
+	SHIFT: begin
+
+		if(counter==16)begin
+			DONE <= 1;
+			STATE <= IDEL;
+			CS <= 1;
+			counter =0;
+		end
+	end
+	endcase
+end
 assign MOSI = OUT_SR[0];
 
 endmodule

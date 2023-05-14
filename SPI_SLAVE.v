@@ -37,18 +37,35 @@ always @(posedge CLK) begin
 	end
 	SHIFT: begin
 		OUT_SR <= OUT_SR>>1;
-		counter = counter+1;
+		
+	end
+
+	endcase
+end
+always @(negedge CLK) begin
+	case(STATE) 
+	SHIFT: begin
 		IN_SR <= IN_SR>>1;
 		IN_SR[15] <= SDI;
+		counter = counter+1;
+	end
+
+	endcase
+end
+
+always @(posedge CLK) begin
+	case(STATE)
+	SHIFT: begin
+
 		if(counter==16)begin
 			DONE <= 1;
 			STATE <= IDEL;
 			counter =0;
 		end
 	end
-
 	endcase
 end
+
 always @(posedge DONE) DATA_OUT<=IN_SR;
 
 assign SDO = OUT_SR[0];
