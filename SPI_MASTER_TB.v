@@ -18,11 +18,14 @@ wire clock;
 
 always #10 clk = ~clk;
 
+always @(posedge clk) begin
+	if(master_done) data_enable<=1;
+	if(!cs) data_enable <=0;
+end
 
+always @(master_done) begin
+ 
 
-
-always @(cs or master_done) begin
-    if(!cs) data_enable = 1;
     if(master_done) begin
         $display("Master  %h",master_data_out);
         $display("Slave   %h",slave_data_out);

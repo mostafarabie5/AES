@@ -24,7 +24,9 @@ initial  begin
 	STATE = IDEL;
 end
 
-always @(posedge CS) STATE <= IDEL;
+always @(posedge CLK) begin
+	if(CS) STATE = IDEL;
+end
 
 //always @(posedge CS) STATE <=IDEL;
 
@@ -40,6 +42,7 @@ always @(posedge CLK) begin
 
 	end
 	SHIFT: begin
+		if(!CS) begin
 		OUT_SR <= OUT_SR>>1;
 		counter = counter+1;
 		IN_SR <= IN_SR>>1;
@@ -50,6 +53,7 @@ always @(posedge CLK) begin
 			STATE <= IDEL;
 			CS <= 1;
 			counter =0;
+		end
 		end
 	end
 
