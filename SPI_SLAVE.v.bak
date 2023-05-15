@@ -21,12 +21,11 @@ module SPI_SLAVE(CS, CLK, SDI, SDO,
 	    STATE = IDEL;
     end
 
-//always @(posedge CS) STATE = IDEL;
+always @(posedge CS) STATE = IDEL;
 
+always @(posedge CLK) if(DONE) DONE<=0;
 
 always @(posedge CLK) begin
-	if(DONE) DONE<=0;
-	if(CS) STATE = IDEL;
 	case(STATE) 
 	IDEL: begin
 		if(!CS) STATE <= SHIFT;
@@ -38,20 +37,34 @@ always @(posedge CLK) begin
 	end
 	SHIFT: begin
 		OUT_SR <= OUT_SR>>1;
+		
+	end
+
+	endcase
+end
+always @(negedge CLK) begin
+	case(STATE) 
+	SHIFT: begin
 		IN_SR <= IN_SR>>1;
 		IN_SR[15] <= SDI;
 		counter = counter+1;
+	end
+
+	endcase
+end
+
+always @(posedge CLK) begin
+	case(STATE)
+	SHIFT: begin
+
 		if(counter==16)begin
 			DONE <= 1;
 			STATE <= IDEL;
 			counter =0;
 		end
 	end
-
 	endcase
 end
-
-
 
 always @(posedge DONE) DATA_OUT<=IN_SR;
 
