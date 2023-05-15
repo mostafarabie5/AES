@@ -1,9 +1,8 @@
-
 module invMixColumn(state,out);
 input [0:127]state;
 output[0:127]out;
 
-function [0:7]m2;
+function [0:7]m02;
 input [0:7]m;
 input integer n;
 integer i;
@@ -15,29 +14,29 @@ m=(m[0]==1'b0)?(m << 1):
 (m << 1)^8'h1b;
 end
 
-assign m2=m;
+ m02=m;
 end
 
 endfunction
 
 function [0:7]m0e;
 input [0:7]m;
-m0e=m2(m,3)^m2(m,2)^m2(m,1);
+m0e=m02(m,3)^m02(m,2)^m02(m,1);
 endfunction
 
 function[0:7]m0d;
 input [0:7]m;
-m0d=m2(m,3)^m2(m,2)^m;
+m0d=m02(m,3)^m02(m,2)^m;
 endfunction 
 
 function[0:7]m0b;
 input [0:7]m;
-m0b=m2(m,3)^m2(m,1)^m;
+m0b=m02(m,3)^m02(m,1)^m;
 endfunction 
 
 function[0:7]m09;
 input [0:7]m;
-m09=m2(m,3)^m;
+m09=m02(m,3)^m;
 endfunction 
 
 assign out [0:7]=m0e(state[0:7])^m0b(state[8:15])^m0d(state[16:23])^m09(state[24:31]);
