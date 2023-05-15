@@ -4,8 +4,10 @@ input [127:0] in,
 output [127:0] out
 );
 genvar i;
-for( i= 0; i<16;i=i+1)
-begin
-InverseS_Box mm(in[8*i+7:8*i],out[8*i+7:8*i]);
-end
+generate 
+	for( i= 0; i<16;i=i+1) begin :Substitution
+		InverseS_Box mm(in[8*i+7:8*i],out[8*i+7:8*i]);
+		end
+	
+endgenerate
 endmodule

@@ -14,10 +14,11 @@ KeyExpansion e1(key,completeKey);
 Add_Round_Key a1(plaintext,completeKey[0:127],out[0]);
 
 genvar i;
-for(i=1;i<NR;i=i+1)
-begin
-EncryptionRound r1(out[i-1],completeKey[128*i+:128],out[i]);
-end
+generate
+for(i=1;i<NR;i=i+1)begin :EncryptionSteps
+		EncryptionRound r1(out[i-1],completeKey[128*i+:128],out[i]);
+		end
+endgenerate
 
 
 SubBytes s1(out[NR-1],afterSub);
